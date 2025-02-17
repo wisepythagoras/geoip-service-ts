@@ -125,8 +125,10 @@ declare global {
      * Experimental! This will change.
      */
     class DB {
-        query(q: string, ...args: any): Record<string, any>[] | null;
-        exec(sql: string, ...args: any): SQLExecResultT | null;
+        // querySync(q: string, ...args: any): Record<string, any>[] | null;
+        // execSync(sql: string, ...args: any): SQLExecResultT | null;
+        query(q: string, ...args: any): Promise<Record<string, any>[]>;
+        exec(sql: string, ...args: any): Promise<SQLExecResultT>;
     }
 }
 
