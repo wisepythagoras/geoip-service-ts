@@ -34,12 +34,12 @@ declare global {
         function read(fileName: string): Promise<string>;
     }
 
-    interface IPList {
+    namespace IPList {
         /**
          * Parses a string containing an IP set/list into a string array.
          * @param blob The blob to parse.
          */
-        parse(blob: string): Promise<string[]>;
+        function parse(blob: string): Promise<string[]>;
     }
 
     class IP {
