@@ -122,13 +122,53 @@ declare global {
     }
 
     /**
-     * Experimental! This will change.
+     * Access and manage the dedicated database for the extension.
+     * @example
+     * const db = new DB();
      */
     class DB {
         // querySync(q: string, ...args: any): Record<string, any>[] | null;
         // execSync(sql: string, ...args: any): SQLExecResultT | null;
+        /**
+         * Run a query.
+         * @example
+         * const rows = await db.query('select * from stuff where id = ?', myId);
+         * @param q The query
+         * @param args The arguments
+         */
         query(q: string, ...args: any): Promise<Record<string, any>[]>;
+        /**
+         * Execute queries such as insert, delete, create, etc.
+         * @example
+         * const res = await db.exec('update stuff set field = ? where id = ?', data, myId);
+         * @param sql The query
+         * @param args The arguments
+         */
         exec(sql: string, ...args: any): Promise<SQLExecResultT>;
+    }
+
+    /**
+     * The IPSet class parses and manages an IP set.
+     * @example
+     * const ipSet = new IPSet(['1.1.1.1', '2.2.2.2/16']);
+     */
+    class IPSet {
+        /**
+         * Create a new instance of an IP set based on an array of IPs or
+         * an actual IP set file.
+         * @param set The IP set
+         * @param opts Any options
+         */
+        constructor(set: string[] | string, opts?: Partial<IPSetOptsT>);
+        /**
+         * Returns the list of IPs and CIDR ranges.
+         */
+        getEntries(): string[];
+        /**
+         * Check if the set contains an IP or CIDR range.
+         * @param ip The IP or CIDR range
+         */
+        contains(ip: string): boolean;
     }
 }
 
@@ -214,4 +254,23 @@ type ExtensionConfigT = {
     endpoints: EndpointT[];
     jobs: CronJobT[];
     hasLookup?: boolean;
+};
+
+enum UpdateFreq {
+    Hourly = 0,
+    Daily = 1,
+    Weekly = 2,
+    BiWeekly = 3,
+    Monthly = 4,
+}
+
+type IPSetOptsT = {
+    name: string;
+    maintainer: string;
+    url: string;
+    date: Date;
+    update_req: UpdateFreq;
+    version: number;
+    description: string;
+    notes: string;
 };
