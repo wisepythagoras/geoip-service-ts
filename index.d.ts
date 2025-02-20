@@ -169,6 +169,10 @@ declare global {
          * @param ip The IP or CIDR range
          */
         contains(ip: string): boolean;
+        /**
+         * Generate the plaintext IP set.
+         */
+        generate(): string;
     }
 }
 
