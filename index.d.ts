@@ -174,107 +174,107 @@ declare global {
          */
         generate(): string;
     }
+
+    type RequestT = {
+        /**
+         * Returns the value of the URL param.
+         * @example
+         * // For endpoint `/my/endpoint/:myparam`
+         * const myparam = req.param('myparam');
+         * @param name The name of the URL param.
+         */
+        param: (name: string) => string;
+        /**
+         * Returns the value of the request header.
+         * @param name The name of the header.
+         */
+        getHeader: (name: string) => string;
+        /**
+         * Returns the value of the URL query. If the key doesn't exist, then it will return
+         * an empty string.
+         * @param name The name of the query param.
+         */
+        getQuery: (name: string) => string;
+    };
+
+    type ResponseT = {
+        /**
+         * Responds with JSON.
+         * @param status The HTTP status.
+         * @param payload The payload to return.
+         */
+        json: (status: number, payload: any) => void;
+        /**
+         * Abort the HTTP request.
+         * @param status The status to return.
+         * @param reason The reason the request is being aborted.
+         */
+        abort: (status: number, reason: string) => void;
+    };
+    
+    type SQLExecResultT = {
+        rowsAffected: number;
+    };
+    
+    type RangeDetailsT = {
+        ip: string;
+        range: string;
+    };
+
+    type HTTPMethodT = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
+    type EndpointT = {
+        /**
+         * All endpoints are added under the `/api` route, so your definition
+         * should omit the `/api` part. These endpoints are specific to each
+         * extension.
+         * @example
+         * `/list` will translate to `/api/my-extension/list`
+         */
+        endpoint: string;
+        method: HTTPMethodT;
+        /**
+         * This should be the name of the function that you defined to handle the request.
+         */
+        handler: string;
+    };
+
+    type CronJobT = {
+        /**
+         * The format for this is the same as the crontab on Linix. You can use https://cron.help
+         * to craft these.
+         */
+        cron: string;
+        /**
+         * This should be the name of the function that you defined to handle the job.
+         */
+        job: string;
+    };
+
+    type ExtensionConfigT = {
+        version: number;
+        name: string;
+        endpoints: EndpointT[];
+        jobs: CronJobT[];
+        hasLookup?: boolean;
+    };
+
+    enum UpdateFreq {
+        Hourly = 0,
+        Daily = 1,
+        Weekly = 2,
+        BiWeekly = 3,
+        Monthly = 4,
+    }
+
+    type IPSetOptsT = {
+        name: string;
+        maintainer: string;
+        url: string;
+        date: Date;
+        update_req: UpdateFreq;
+        version: number;
+        description: string;
+        notes: string;
+    };
 }
-
-type SQLExecResultT = {
-    rowsAffected: number;
-};
-
-type RangeDetailsT = {
-    ip: string;
-    range: string;
-};
-
-type RequestT = {
-    /**
-     * Returns the value of the URL param.
-     * @example
-     * // For endpoint `/my/endpoint/:myparam`
-     * const myparam = req.param('myparam');
-     * @param name The name of the URL param.
-     */
-    param: (name: string) => string;
-    /**
-     * Returns the value of the request header.
-     * @param name The name of the header.
-     */
-    getHeader: (name: string) => string;
-    /**
-     * Returns the value of the URL query. If the key doesn't exist, then it will return
-     * an empty string.
-     * @param name The name of the query param.
-     */
-    getQuery: (name: string) => string;
-};
-
-type ResponseT = {
-    /**
-     * Responds with JSON.
-     * @param status The HTTP status.
-     * @param payload The payload to return.
-     */
-    json: (status: number, payload: any) => void;
-    /**
-     * Abort the HTTP request.
-     * @param status The status to return.
-     * @param reason The reason the request is being aborted.
-     */
-    abort: (status: number, reason: string) => void;
-};
-
-type HTTPMethodT = 'GET' | 'POST' | 'PUT' | 'DELETE';
-
-type EndpointT = {
-    /**
-     * All endpoints are added under the `/api` route, so your definition
-     * should omit the `/api` part. These endpoints are specific to each
-     * extension.
-     * @example
-     * `/list` will translate to `/api/my-extension/list`
-     */
-    endpoint: string;
-    method: HTTPMethodT;
-    /**
-     * This should be the name of the function that you defined to handle the request.
-     */
-    handler: string;
-};
-
-type CronJobT = {
-    /**
-     * The format for this is the same as the crontab on Linix. You can use https://cron.help
-     * to craft these.
-     */
-    cron: string;
-    /**
-     * This should be the name of the function that you defined to handle the job.
-     */
-    job: string;
-};
-
-type ExtensionConfigT = {
-    version: number;
-    name: string;
-    endpoints: EndpointT[];
-    jobs: CronJobT[];
-    hasLookup?: boolean;
-};
-
-enum UpdateFreq {
-    Hourly = 0,
-    Daily = 1,
-    Weekly = 2,
-    BiWeekly = 3,
-    Monthly = 4,
-}
-
-type IPSetOptsT = {
-    name: string;
-    maintainer: string;
-    url: string;
-    date: Date;
-    update_req: UpdateFreq;
-    version: number;
-    description: string;
-    notes: string;
-};
