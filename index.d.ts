@@ -195,6 +195,11 @@ declare global {
          * @param name The name of the query param.
          */
         getQuery: (name: string) => string;
+        /**
+         * Returns the requesting client's IP address.
+         * @returns The client's IP address.
+         */
+        clientIP: () => string;
     };
 
     type ResponseT = {
